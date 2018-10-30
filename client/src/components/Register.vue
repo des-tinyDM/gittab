@@ -1,36 +1,105 @@
+
 <template>
-  <div>
-    <h1>Register</h1>
-    <input type="email" name="email" placeholder="Email" v-model='email'/>
-    <input type="password" name="password" placeholder="Password" v-model='password'/>
-    <button @click="register">Register</button>
-  </div>
+<v-layout>
+    <v-flex xs12 sm6 md6 lg6 offset-sm3>
+      <v-card>
+        <div class="white elevation-2">
+        <v-toolbar flat dense class="deep-purple" dark>
+          <v-toolbar-title>Register</v-toolbar-title>
+        </v-toolbar>
+
+        <div class="pl-4 pr-4 pt-2 pb-2">
+          <input
+            type="email"
+            name="email"
+            v-model="email"
+            placeholder="email" />
+          <br>
+          <input
+            type="password"
+            name="password"
+            v-model="password"
+            placeholder="password" />
+          <br>
+          <div class="error" v-html="error" />
+          <br>
+          <v-btn
+            class="deep-purple"
+            dark
+            @click="register">
+            Register
+          </v-btn>
+        </div>
+      </div>
+      </v-card>
+    </v-flex>
+  </v-layout>
+  <!-- <v-layout column align-center>
+    <v-flex xs6 offset-xs3>
+      <div class="white elevation-2">
+        <v-toolbar flat dense class="cyan" dark>
+          <v-toolbar-title>Register</v-toolbar-title>
+        </v-toolbar>
+
+        <div class="pl-4 pr-4 pt-2 pb-2">
+          <input
+            type="email"
+            name="email"
+            v-model="email"
+            placeholder="email" />
+          <br>
+          <input
+            type="password"
+            name="password"
+            v-model="password"
+            placeholder="password" />
+          <br>
+          <div class="error" v-html="error" />
+          <br>
+          <v-btn
+            class="cyan"
+            @click="register">
+            Register
+          </v-btn>
+        </div>
+      </div>
+    </v-flex>
+  </v-layout> -->
 </template>
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 export default {
-  data: function () {
+  data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   methods: {
     async register () {
-      const response = await AuthenticationService.register({ email: this.email, password: this.password })
-      console.log(response.data)
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   }
-  // watch: {
-  //   email (value) {
-  //     console.log('email has changed', value)
-  //   }
-  // },
-  // mounted () {
-  //   setTimeout(() => {
-  //     this.email = 'hello world'
-  //   }, 200)
-  // }
 }
 </script>
+
+<style scoped>
+.error {
+  color: red;
+}
+.box {
+  margin: 0 auto;
+}
+.container {
+  border: 1px solid black;
+}
+</style>
