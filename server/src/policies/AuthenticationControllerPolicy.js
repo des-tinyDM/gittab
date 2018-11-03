@@ -1,4 +1,3 @@
-
 const Joi = require('joi')
 
 module.exports = {
@@ -10,32 +9,32 @@ module.exports = {
       )
     }
 
-    const { error } = Joi.validate(req.body, schema)
+    const {error, value} = Joi.validate(req.body, schema)
 
     if (error) {
       switch (error.details[0].context.key) {
         case 'email':
           res.status(400).send({
-            error: 'You must provide a valid email address.'
+            error: 'You must provide a valid email address'
           })
           break
         case 'password':
           res.status(400).send({
-            error: `The password provided fails to meet at least one of these criteria:
-              <br/>
-              1. It must consist of only lowercase and uppercase characters and numbers.
-              <br/>
-              2. It must be between 8 and 32 characters long.
+            error: `The password provided failed to match the following rules:
+              <br>
+              1. It must contain ONLY the following characters: lower case, upper case, numerics.
+              <br>
+              2. It must be at least 8 characters in length and not greater than 32 characters in length.
             `
           })
           break
-        default:
+        default: 
           res.status(400).send({
             error: 'Invalid registration information'
           })
       }
     } else {
-      next()
+      next()   
     }
   }
 }
