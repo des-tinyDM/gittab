@@ -1,6 +1,7 @@
 const {
   History,
-  Song
+  Song,
+  User
 } = require('../models')
 const _ = require('lodash')
 
@@ -16,9 +17,6 @@ module.exports = {
           {
             model: Song
           }
-        ],
-        order: [
-          ['createdAt', 'DESC']
         ]
       })
         .map(history => history.toJSON())
